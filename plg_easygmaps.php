@@ -59,22 +59,35 @@ class plgK2Plg_easygmaps extends K2Plugin {
     $lon = trim($plugins->get('longitude'));
     if (empty($lat) || empty($lon))
       return false;
-    $deflocal = (empty($this->params->get('local')) ? '' : '&language=' . $this->params->get('local'));
-    $defcmarker = (empty($this->params->get('cmarker')) ? '' : ',icon: "'.$this->params->get('cmarker').'"');
-    $apikey = (empty($this->params->get('apikey')) ? '' : '&key=' . $this->params->get('apikey'));
-    $async = (empty($this->params->get('async')) ? FALSE : TRUE);
+    //loading defaults
+    $defLocal=$this->params->get('local');
+    $defMarker=$this->params->get('cmarker');
+	$apiKey=$this->params->get('apikey');
+	$sync=$this->params->get('async');
+	$defHeight=$this->params->get('height');	
+	
+	//loading article params
+	$itemLocal=$plugins->get('local');
+	$itemMapType=$plugins->get('maptype');
+	$itemMarker=$plugins->get('cmarker');
+	$itemHeight=$plugins->get('height');
+	$itemInfo=$plugins->get('infowindow');
+	
+    $deflocal = (empty($loadDefLocal) ? '' : '&language=' . $this->params->get('local'));
+    $defcmarker = (empty($defMarker) ? '' : ',icon: "'.$this->params->get('cmarker').'"');
+    $apikey = (empty($apiKey) ? '' : '&key=' . $this->params->get('apikey'));
+    $async = (empty($sync) ? FALSE : TRUE);
     $zoom = ($plugins->get('zoom') == '-1' ? $this->params->get('zoom') : $plugins->get('zoom'));
     $mapMaxZoom = ($plugins->get('maxzoom') == '-1' ? $this->params->get('maxzoom') : $plugins->get('maxzoom'));
     $mapMinZoom = ($plugins->get('minzoom') == '-1' ? $this->params->get('minzoom') : $plugins->get('minzoom'));
-    $local = (empty($plugins->get('local')) ? $deflocal : '&language=' . $plugins->get('local'));
-    $maptype = ($plugins->get('maptype') === "0" ? $this->params->get('maptype') : $plugins->get('maptype'));
-	$cmarker=(empty($plugins->get('cmarker')) ? $defcmarker : ',icon: "'.$plugins->get('cmarker').'"');
-    $height = (empty($plugins->get('height')) ? $this->params->get('height') : $plugins->get('height'));
-
-    $infowindow = (empty($plugins->get('infowindow')) ? "" : '
+    $local = (empty($itemLocal) ? $deflocal : '&language=' . $itemLocal);
+    $maptype = ( $itemMapType === "0" ? $this->params->get('maptype') : $itemMapType);
+	$cmarker=(empty($itemMarker) ? $defcmarker : ',icon: "'.$itemMarker.'"');
+    $height = (empty($itemHeight) ? $defHeight : $itemHeight);
+    $infowindow = (empty($itemInfo) ? "" : '
 			var infowindow = new google.maps.InfoWindow({
 				maxWidth: 500,
-				content:\'' . trim(addslashes(preg_replace('/\s\s+/', ' ', $plugins->get('infowindow')))) . '\'
+				content:\'' . trim(addslashes(preg_replace('/\s\s+/', ' ', $itemInfo))) . '\'
 			});
 			google.maps.event.addListener(marker, \'click\', openmarker);
 			function openmarker() {infowindow.open(map, marker);}

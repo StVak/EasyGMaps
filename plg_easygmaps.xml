@@ -7,7 +7,7 @@
 	<authorUrl>http://blog.pointin.gr</authorUrl>
 	<version>1.0</version>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-	<description>Leave K2 items fields blank to load default settings. API key is not required in v3.</description>
+	<description>Enable Plugin in Plugin Manager. Leave K2 items fields blank to load default settings. API key is not required in v3.</description>
 	<files>
 		<filename plugin="plg_easygmaps">plg_easygmaps.php</filename>
 	</files>
@@ -47,6 +47,7 @@
  					<option value="TERRAIN">Terrain</option> 					
 			</field>
 			<field name="cmarker" label="Custom Marker" type="media" directory="" />
+			<field name="height" label="Map Height" default="" />
 			<field name="infowindow" label ="Info Window" type="editor" width="400"  filter="safehtml" />
 		</fieldset>
 	</fields>
