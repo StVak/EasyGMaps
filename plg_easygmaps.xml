@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="k2" method="upgrade">
+	<name>K2 EasyGMaps by StVakis</name>
+	<author>Stefanos Mountrakis</author>
+	<creationDate>February 3rd, 2014</creationDate>
+	<authorEmail>stvakis@gmail.com</authorEmail>
+	<authorUrl>http://blog.pointin.gr</authorUrl>
+	<version>1.0</version>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<description>Leave K2 items fields blank to load default settings. API key is not required in v3.</description>
+	<files>
+		<filename plugin="plg_easygmaps">plg_easygmaps.php</filename>
+	</files>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="apikey" type="text" default="" label="Google Maps API key" description="" />
+				<field name="async" type="checkbox" label="Asynchronous Load" description="Asynchronous"  value="1" />
+				<field name="zoom" type="integer" default="8" label="Map Zoom" description="" first="0" last="23" step="1" />			
+				<field name="maxzoom" type="integer" default="23" label="Maximum Zoom" description="" first="0" last="23" step="1" />			
+				<field name="minzoom" type="integer" default="0" label="Minimum Zoom" description="" first="0" last="23" step="1" />			
+				<field name="local" type="text" size="80" default="" label="Map Localization" description="The default map localization, use en el ja etc." />
+				<field name="maptype" type="list" default="ROADMAP" label="Map Type" description="">
+  					<option value="ROADMAP">Roadmap</option>
+ 					<option value="SATELLITE">Satellite</option>
+  					<option value="HYBRID">Hybrid</option>
+ 					<option value="TERRAIN">Terrain</option> 					
+				</field>
+				<field name="cmarker" label="Custom marker" type="media" directory="" />
+				<field name="height" label="Map Height" default="500" />
+			</fieldset>
+		</fields>
+	</config>
+	<fields group="item-content">
+		<fieldset name="basic">
+			<field name="latitude" type="text" size="80" default="" label="Latitude" description="" />
+			<field name="longitude" type="text" size="80" default="" label="Longitude" description="" />
+			<field name="zoom" type="integer" default="-1" label="Map Zoom" description="Map Zoom, leave -1 for default settings" first="-1" last="23" step="1" />			
+			<field name="maxzoom" type="integer" default="-1" label="Maximum Zoom" description="Map Maximum Zoom, leave -1 for default settings" first="-1" last="23" step="1" />			
+			<field name="minzoom" type="integer" default="-1" label="Minimum Zoom" description="Map Minimum Zoom, leave -1 for default settings" first="-1" last="23" step="1" />			
+			<field name="local" type="text" size="80" default="" label="Localization" description="Map Localization" />
+			<field name="maptype" type="list" default="" label="Map Type" description="">
+  					<option value="0">default</option>
+  					<option value="ROADMAP">Roadmap</option>
+ 					<option value="SATELLITE">Satellite</option>
+  					<option value="HYBRID">Hybrid</option>
+ 					<option value="TERRAIN">Terrain</option> 					
+			</field>
+			<field name="cmarker" label="Custom Marker" type="media" directory="" />
+			<field name="infowindow" label ="Info Window" type="editor" width="400"  filter="safehtml" />
+		</fieldset>
+	</fields>
+</extension>
