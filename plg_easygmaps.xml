@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="2.5" type="plugin" group="k2" method="upgrade">
-	<name>K2 EasyGMaps by StVakis</name>
+	<name>Easy GMaps for K2</name>
 	<author>Stefanos Mountrakis</author>
 	<creationDate>February 3rd, 2014</creationDate>
 	<authorEmail>stvakis@gmail.com</authorEmail>
