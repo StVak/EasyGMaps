@@ -82,7 +82,7 @@ class plgK2Plg_easygmaps extends K2Plugin {
     $mapMinZoom = ($plugins->get('minzoom') == '-1' ? $this->params->get('minzoom') : $plugins->get('minzoom'));
     $local = (empty($itemLocal) ? $deflocal : '&language=' . $itemLocal);
     $maptype = ( $itemMapType === "0" ? $this->params->get('maptype') : $itemMapType);
-	$cmarker=(empty($itemMarker) ? $defcmarker : ',icon: "'.$itemMarker.'"');
+	$cmarker=(empty($itemMarker) ? $defcmarker : ',icon: "'.JURI::base().$itemMarker.'"');
     $height = (empty($itemHeight) ? $defHeight : $itemHeight);
     $infowindow = (empty($itemInfo) ? "" : '
 			var infowindow = new google.maps.InfoWindow({
