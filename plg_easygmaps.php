@@ -154,6 +154,83 @@ class plgK2Plg_easygmaps extends K2Plugin {
     return false;
   }
 
+  function onRenderAdminForm(&$item, $type, $tab = '') {
+        if ($type == 'item' && $tab == 'content') {
+            
+            $lat = trim($this->params->get('default_lat'));
+            $lon = trim($this->params->get('default_lon'));
+            if (empty($lat) || empty($lon))
+                return false;
+            
+            $defLocal = $this->params->get('local');
+            $defMarker = $this->params->get('cmarker');
+            $apiKey = $this->params->get('apikey');
+            $sync = $this->params->get('async');
+            $defHeight = $this->params->get('height');
+
+            $deflocal = '&language=' . $this->params->get('local');
+            $defcmarker = (empty($defMarker) ? '' : ',icon: "' . $this->params->get('cmarker') . '"');
+            $apikey = (empty($apiKey) ? '' : '&key=' . $this->params->get('apikey'));
+            $async = (empty($sync) ? FALSE : TRUE);
+            $zoom = $this->params->get('zoom');
+            $mapMaxZoom = $this->params->get('maxzoom');
+            $mapMinZoom = $this->params->get('minzoom');
+
+            $maptype = $this->params->get('maptype');
+            
+            $mapsOptions = "
+		var mapOptions = {
+  			zoom: " . $zoom . ",
+    		center: new google.maps.LatLng(" . $lat . ", " . $lon . "),
+    		mapTypeId: google.maps.MapTypeId." . $maptype . ",
+    		maxZoom:" . $mapMaxZoom . ",
+    		minZoom:" . $mapMinZoom . "    		
+  		};";
+            $document = JFactory::getDocument();
+            if (!$async) {
+                $document->addScript('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false' . $defLocal . $apikey);
+                $document->addScriptDeclaration("
+		var map;
+		function initialize() {
+			" . $mapsOptions . "  
+			map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
+			var marker = new google.maps.Marker({
+				map: map,
+				position: map.getCenter()" . $defmarker . "
+			});		
+		}
+		google.maps.event.addDomListener(window, 'load', initialize);");
+            } else {
+                $document->addScriptDeclaration("
+		function initialize() {
+			" . $mapsOptions . "  
+			var map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
+			var marker = new google.maps.Marker({
+				map: map,
+				position: map.getCenter()" . $defmarker . "
+			});		      
+		}
+		function loadScript() {
+ 			var script = document.createElement('script');
+			script.type = 'text/javascript';
+			script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=initialize" . $defLocal . $apikey . "';
+			document.body.appendChild(script);
+		}
+		window.onload = loadScript;");
+            }
+                        
+            $plugin = parent::onRenderAdminForm($item, $type, $tab);
+            $plugin->fields = '<div><div id="map-canvas"></div><div id="plugin-fields">' . $plugin->fields.'</div>'; 
+            
+                    
+            // Add styles
+            $style = '#map-canvas img{max-width:none; } #map-canvas {width:50%; height:' . $defHeight . 'px;margin: 5px;padding: 5px; float: right;}';
+            $style .= '#plugin-fields {float: left; width: 30%;}';
+            $document->addStyleDeclaration($style);
+            return $plugin; 
+        }
+    }
+
 }
 
 // END CLASS
