@@ -153,7 +153,7 @@ class plgK2Plg_easygmaps extends K2Plugin {
 
     return false;
   }
-
+//Added By Mohamed Abdelaziz (zizo@joomreem.com)
   function onRenderAdminForm(&$item, $type, $tab = '') {
         if ($type == 'item' && $tab == 'content') {
             
@@ -165,13 +165,12 @@ class plgK2Plg_easygmaps extends K2Plugin {
             $defLocal = $this->params->get('local');
             $defMarker = $this->params->get('cmarker');
             $apiKey = $this->params->get('apikey');
-            $sync = $this->params->get('async');
             $defHeight = $this->params->get('height');
 
             $deflocal = '&language=' . $this->params->get('local');
             $defcmarker = (empty($defMarker) ? '' : ',icon: "' . $this->params->get('cmarker') . '"');
             $apikey = (empty($apiKey) ? '' : '&key=' . $this->params->get('apikey'));
-            $async = (empty($sync) ? FALSE : TRUE);
+
             $zoom = $this->params->get('zoom');
             $mapMaxZoom = $this->params->get('maxzoom');
             $mapMinZoom = $this->params->get('minzoom');
@@ -187,37 +186,30 @@ class plgK2Plg_easygmaps extends K2Plugin {
     		minZoom:" . $mapMinZoom . "    		
   		};";
             $document = JFactory::getDocument();
-            if (!$async) {
-                $document->addScript('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false' . $defLocal . $apikey);
-                $document->addScriptDeclaration("
-		var map;
-		function initialize() {
-			" . $mapsOptions . "  
-			map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
-			var marker = new google.maps.Marker({
-				map: map,
-				position: map.getCenter()" . $defmarker . "
-			});		
-		}
-		google.maps.event.addDomListener(window, 'load', initialize);");
-            } else {
-                $document->addScriptDeclaration("
-		function initialize() {
-			" . $mapsOptions . "  
-			var map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
-			var marker = new google.maps.Marker({
-				map: map,
-				position: map.getCenter()" . $defmarker . "
-			});		      
-		}
-		function loadScript() {
- 			var script = document.createElement('script');
-			script.type = 'text/javascript';
-			script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=initialize" . $defLocal . $apikey . "';
-			document.body.appendChild(script);
-		}
-		window.onload = loadScript;");
+            
+            $document->addScript('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false' . $defLocal . $apikey);
+            $document->addScriptDeclaration("
+            var map;
+            function initialize() {
+                    " . $mapsOptions . "  
+                    map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
+                    var marker = new google.maps.Marker({
+                            map: map,
+                            draggable: true,
+                            position: map.getCenter()" . $defmarker . "
+                    });
+                    google.maps.event.addListener(marker,'dragend', function() {
+                        position = marker.getPosition();
+                        map.panTo(position);                            
+                        document.getElementById('latitude').value= position.lat();
+                        document.getElementById('longitude').value= position.lng();
+
+                    });
+
             }
+
+            google.maps.event.addDomListener(window, 'load', initialize);");
+           
                         
             $plugin = parent::onRenderAdminForm($item, $type, $tab);
             $plugin->fields = '<div><div id="map-canvas"></div><div id="plugin-fields">' . $plugin->fields.'</div>'; 
@@ -230,6 +222,7 @@ class plgK2Plg_easygmaps extends K2Plugin {
             return $plugin; 
         }
     }
+    //Endo of Added By Mohamed Abdelaziz (zizo@joomreem.com)
 
 }
 
