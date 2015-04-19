@@ -16,9 +16,7 @@
 			<fieldset name="basic">
 				<field name="apikey" type="text" default="" label="Google Maps API key" description="" />
 				<field name="async" type="checkbox" label="Asynchronous Load" description="Asynchronous"  value="1" />
-                                <field name="default_lat" type="text" default="" label="Default latitude" description="" />
-				<field name="default_lon" type="text" default="" label="Default Longitude" description="" />
-                                <field name="zoom" type="integer" default="8" label="Map Zoom" description="" first="0" last="23" step="1" />			
+				<field name="zoom" type="integer" default="8" label="Map Zoom" description="" first="0" last="23" step="1" />			
 				<field name="maxzoom" type="integer" default="23" label="Maximum Zoom" description="" first="0" last="23" step="1" />			
 				<field name="minzoom" type="integer" default="0" label="Minimum Zoom" description="" first="0" last="23" step="1" />			
 				<field name="local" type="text" size="80" default="" label="Map Localization" description="The default map localization, use en el ja etc." />
